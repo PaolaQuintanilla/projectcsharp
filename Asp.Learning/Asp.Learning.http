@@ -1,0 +1,6 @@
+@Asp.Learning_HostAddress = http://localhost:5019
+
+GET {{Asp.Learning_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
