@@ -1,4 +1,8 @@
-﻿using Asp.Learning.repositories;
+﻿using Asp.Learning.Commanding.Commands;
+using Asp.Learning.Commanding.Queries;
+using Asp.Learning.Contracts;
+using Asp.Learning.repositories;
+using Asp.Learning.repositories.Entities;
 using Asp.Learning.utilities;
 using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +18,8 @@ public static class HostingExtensions
             builder.Services.RegisterVersioning();
             builder.Services.RegisterSwager();
             builder.RegisterDBContext();
-            //builder.Services.RegisterRespoitories();
+            builder.Services.RegisterRespoitories();
+            builder.Services.RegisterCommanding();
             //builder.Services.RegisterCors();
             //builder.Services.RegisterFilters();
         }
@@ -30,10 +35,18 @@ public static class HostingExtensions
         services.AddControllers();
     }
 
+
+    //agregando service container
     public static void RegisterRespoitories(this IServiceCollection services)
     {
-        //services.AddScoped(typeof(IReadRepository<IEntity<Guid>>), typeof(SqlRepository<Author>));
-        //services.AddScoped(typeof(IReadRepository<IEntity<Guid>>), typeof(SqlRepository<Course>));
+        services.AddScoped<IRepository<Author>, AuthorsRepository>();
+    }
+
+    public static void RegisterCommanding(this IServiceCollection services)
+    {
+        services.AddScoped<Message>();
+        services.AddScoped<ICommandHandler<CreateAuthorCommand, Guid>, CreateAuthorCommandHandler>();
+        services.AddScoped<IQueryHandler<FindAuthorsQuery, IReadOnlyList<Author>>, FindAuthorsQueryHandler>();
     }
 
     public static void RegisterDBContext(this WebApplicationBuilder builder)
@@ -42,7 +55,7 @@ public static class HostingExtensions
             options.UseSqlServer(builder.Configuration.GetConnectionString("conectionDb")));
     }
 
-    //https://localhost:7035/swagger/index.html
+    //https://localhost:7032/swagger/index.html
     public static void RegisterSwager(this IServiceCollection services)
     {
         services.AddSwaggerGen();
