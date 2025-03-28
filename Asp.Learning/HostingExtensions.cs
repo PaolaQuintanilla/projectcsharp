@@ -44,8 +44,11 @@ public static class HostingExtensions
     //agregando service container
     public static void RegisterRespoitories(this IServiceCollection services)
     {
+        services.AddScoped<RedisCache>();
         services.AddScoped<IWriteRepository<Author>, AuthorsWriteRepository>();
-        services.AddScoped<IReadRepository<Author>, AuthorsReadRepository>();
+        services.AddScoped<IReadRepository<Author>>(provider =>
+            new AuthorsCacheRepository(
+                new AuthorsReadRepository(provider.GetService<LearningDbContext>()), provider.GetService<RedisCache>()));
     }
 
     public static void RegisterCommanding(this IServiceCollection services)
