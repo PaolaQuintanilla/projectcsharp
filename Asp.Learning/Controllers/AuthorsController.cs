@@ -1,5 +1,6 @@
 using Asp.Learning.Commanding.Commands;
 using Asp.Learning.Commanding.Commands.AddBookToAuthor;
+using Asp.Learning.Commanding.Commands.DeleteCourseFromAuthor;
 using Asp.Learning.Commanding.Queries;
 using Asp.Learning.Dtos.requests;
 using Asp.Learning.Dtos.responses;
@@ -102,6 +103,22 @@ public class AuthorsController : ControllerBase//para web apis
             Description = dto.Description,
         };
         var result = this.message.DispatchCommand(comand);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{authorId}/courses/{courseId}")]
+    [ProducesResponseType(203)]
+    public IActionResult RemoveCourseFromAuthor(
+    string authorId, string courseId)
+    {
+        var command = new DeleteCourseFromAuthorCommand
+        {
+            AuthorId = Guid.Parse(authorId),
+            CourseId = Guid.Parse(courseId)
+        };
+
+        var result = this.message.DispatchCommand(command);
 
         return NoContent();
     }

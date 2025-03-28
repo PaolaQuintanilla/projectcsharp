@@ -1,5 +1,6 @@
 ﻿using Asp.Learning.Commanding.Commands;
 using Asp.Learning.Commanding.Commands.AddBookToAuthor;
+using Asp.Learning.Commanding.Commands.DeleteCourseFromAuthor;
 using Asp.Learning.Commanding.Queries;
 using Asp.Learning.Contracts;
 using Asp.Learning.repositories;
@@ -48,6 +49,7 @@ public static class HostingExtensions
         services.AddScoped<Message>();
         services.AddScoped<ICommandHandler<CreateAuthorCommand, Guid>, CreateAuthorCommandHandler>();
         services.AddScoped<ICommandHandler<AddBookToAuthorCommand, Guid>, AddBookToAuthorCommandHandler>();
+        services.AddScoped<ICommandHandler<DeleteCourseFromAuthorCommand, Guid>, DeleteCourseFromAuthorCommandHandler>();
         services.AddScoped<IQueryHandler<FindAuthorsQuery, IReadOnlyList<Author>>, FindAuthorsQueryHandler>();
     }
 

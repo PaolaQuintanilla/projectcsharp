@@ -56,7 +56,7 @@ public class AuthorsRepository : IRepository<Author>
 
     public Author Find(Guid id)
     {
-        var entity = _dbSet.Find(id);
+        var entity = _dbSet.Include((a) => a.Courses).FirstOrDefault(a => a.Id == id);
 
         if (entity is null)
         {
@@ -68,6 +68,6 @@ public class AuthorsRepository : IRepository<Author>
 
     public IReadOnlyList<Author> Find()
     {
-        return this._dbSet.ToList();
+        return this._dbSet.Include((a) => a.Courses).ToList();
     }
 }
