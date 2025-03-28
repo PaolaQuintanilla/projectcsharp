@@ -51,6 +51,7 @@ public static class HostingExtensions
         services.AddScoped<ICommandHandler<AddBookToAuthorCommand, Guid>, AddBookToAuthorCommandHandler>();
         services.AddScoped<ICommandHandler<DeleteCourseFromAuthorCommand, Guid>, DeleteCourseFromAuthorCommandHandler>();
         services.AddScoped<IQueryHandler<FindAuthorsQuery, IReadOnlyList<Author>>, FindAuthorsQueryHandler>();
+        services.AddScoped<IQueryHandler<FindAuthorQuery, Author>, FindAuthorQueryHandler>();
     }
 
     public static void RegisterDBContext(this WebApplicationBuilder builder)

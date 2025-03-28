@@ -8,4 +8,5 @@ public class AuthorV1Dto
     public DateTimeOffset DateOfBirth { get; set; }
     public DateTimeOffset? DateOfDeath { get; set; }
     public string MainCategory { get; set; }
+    public List<CourseV1Dto> Courses { get; set; }
 }

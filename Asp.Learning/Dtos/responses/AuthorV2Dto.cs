@@ -6,4 +6,6 @@ public class AuthorV2Dto
     public string FullName { get; set; }
     public DateTimeOffset DateOfBirth { get; set; }
     public string MainCategory { get; set; }
+    public List<CourseV2Dto> Courses { get; set; }
+
 }

@@ -4,6 +4,7 @@ using Asp.Learning.Commanding.Commands.DeleteCourseFromAuthor;
 using Asp.Learning.Commanding.Queries;
 using Asp.Learning.Dtos.requests;
 using Asp.Learning.Dtos.responses;
+using Asp.Learning.repositories.Entities;
 using Asp.Learning.utilities;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,10 @@ namespace Asp.Learning.Controllers;
 
 //el json que se retorna de los endpoints es la vista en el patron mvc
 [ApiController]//simplifies creation of REST apis
-//[Route("api/[controller]")]
+[Route("api/[controller]")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
-[ApiVersion("2.0")]
+[ApiVersion(2.0, Deprecated = true)]
 public class AuthorsController : ControllerBase//para web apis
 {
     private readonly Message message;
@@ -43,7 +44,8 @@ public class AuthorsController : ControllerBase//para web apis
     }
 
     [HttpGet]
-    [ApiVersion(2.0, Deprecated = true)]
+    [MapToApiVersion("2.0")]
+    //[ApiVersion(2.0, Deprecated = true)]
     //IActionResult te permite devolver diferentes typos de respuesta
     public IActionResult GetAuthorsV2()
     {
@@ -56,6 +58,64 @@ public class AuthorsController : ControllerBase//para web apis
             DateOfBirth = author.DateOfBirth,
             MainCategory = author.MainCategory,
         });
+        return Ok(authorsV2);
+    }
+
+    [HttpGet("{authorId}")]
+    //[ApiVersion(1.0, Deprecated = true)]
+    //IActionResult te permite devolver diferentes typos de respuesta
+    public IActionResult GetAuthorByIdV1(string authorId)
+    {
+        var query = new FindAuthorQuery
+        {
+            Id  = Guid.Parse(authorId),
+        };
+
+        var response = this.message.DispatchQuery(query);
+
+        var authorsV2 = new AuthorV1Dto
+        {
+            Id = response.Id,
+            FirstName = response.FirstName,
+            LastName = response.LastName,
+            DateOfBirth = response.DateOfBirth,
+            MainCategory = response.MainCategory,
+            Courses = response.Courses.Select(course => new CourseV1Dto
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Description = course.Description,
+            }).ToList()
+        };
+
+        return Ok(authorsV2);
+    }
+
+    [HttpGet("{authorId}")]
+    [MapToApiVersion("2.0")]
+    //IActionResult te permite devolver diferentes typos de respuesta
+    public IActionResult GetAuthorByIdV2(string authorId)
+    {
+        var query = new FindAuthorQuery
+        {
+            Id = Guid.Parse(authorId),
+        };
+
+        var response = this.message.DispatchQuery(query);
+
+        var authorsV2 = new AuthorV2Dto
+        {
+            Id = response.Id,
+            FullName = string.Format("{0} {1}", response.FirstName, response.LastName),
+            DateOfBirth = response.DateOfBirth,
+            MainCategory = response.MainCategory,
+            Courses = response.Courses.Select(course => new CourseV2Dto
+            {
+                Id = course.Id,
+                Title = course.Title
+            }).ToList()
+        };
+
         return Ok(authorsV2);
     }
 
@@ -76,7 +136,7 @@ public class AuthorsController : ControllerBase//para web apis
     }
 
     [HttpPost]
-    [ApiVersion(2.0, Deprecated = true)]
+    [MapToApiVersion("2.0")]
     public IActionResult PostAuthorsV2(CreateAuthorV2Dto dto)
     {
         string[] values = dto.FullName.Split(',');
