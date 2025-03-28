@@ -15,26 +15,26 @@ public class AuthorsCacheRepository : IReadRepository<Author>
         this.repository = repository;
         this.redis = redis;
     }
-    public Author Find(Guid id)
+    public async Task<Author> FindAsync(Guid id)
     {
         var authorsChache = this.redis.Find(id);
 
         if (authorsChache is null)
         {
-            return this.repository.Find(id);
+            return await this.repository.FindAsync(id);
         }
 
         return authorsChache;
         throw new NotImplementedException();
     }
 
-    public IReadOnlyList<Author> Find()
+    public async Task<IReadOnlyList<Author>> FindAsync()
     {
         var authorsChache = this.redis.Find();
 
         if (authorsChache.Count() == 0)
         {
-            return this.repository.Find();
+            return await this.repository.FindAsync();
         }
 
         return authorsChache;

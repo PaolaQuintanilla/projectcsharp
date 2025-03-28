@@ -11,7 +11,7 @@ public class CreateAuthorCommandHandler : ICommandHandler<CreateAuthorCommand, G
     {
         this.repository = repository;
     }
-    public Guid HandleAsync(CreateAuthorCommand command)
+    public Task<Guid> HandleAsync(CreateAuthorCommand command)
     {
         var author = new Author
         {
@@ -21,6 +21,6 @@ public class CreateAuthorCommandHandler : ICommandHandler<CreateAuthorCommand, G
             DateOfDeath = command.DateOfDeath,
             MainCategory = command.MainCategory,
         };
-        return repository.Add(author);
+        return repository.AddAsync(author);
     }
 }

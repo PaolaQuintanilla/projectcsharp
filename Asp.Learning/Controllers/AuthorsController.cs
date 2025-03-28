@@ -5,7 +5,9 @@ using Asp.Learning.Commanding.Queries.FindAuthor;
 using Asp.Learning.Commanding.Queries.FindAuthors;
 using Asp.Learning.Dtos.requests;
 using Asp.Learning.Dtos.responses;
+using Asp.Learning.repositories.Entities;
 using Asp.Learning.utilities;
+using Asp.Learning.utilities.filters;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,9 +29,9 @@ public class AuthorsController : ControllerAPI//para web apis
 
     [HttpGet]
     //IActionResult te permite devolver diferentes typos de respuesta
-    public IActionResult GetAuthorsV1()
+    public async Task<IActionResult> GetAuthorsV1()
     {
-        var response = this.message.DispatchQuery(new FindAuthorsQuery());
+        var response = await this.message.DispatchQuery(new FindAuthorsQuery());
         var authorsV1 = response.Select(author => new AuthorV1Dto
         {
             Id = author.Id,
@@ -45,16 +47,17 @@ public class AuthorsController : ControllerAPI//para web apis
                 Description = course.Description,
             }).ToList()
         });
-        return Ok(authorsV1);
+    
+        return Ok(response);
     }
 
     [HttpGet]
     [MapToApiVersion("2.0")]
     //[ApiVersion(2.0, Deprecated = true)]
     //IActionResult te permite devolver diferentes typos de respuesta
-    public IActionResult GetAuthorsV2()
+    public async Task<IActionResult> GetAuthorsV2()
     {
-        var response = this.message.DispatchQuery(new FindAuthorsQuery());
+        var response = await this.message.DispatchQuery(new FindAuthorsQuery());
 
         var authorsV2 = response.Select(author => new AuthorV2Dto
         {
@@ -74,14 +77,14 @@ public class AuthorsController : ControllerAPI//para web apis
     [HttpGet("{authorId}")]
     //[ApiVersion(1.0, Deprecated = true)]
     //IActionResult te permite devolver diferentes typos de respuesta
-    public IActionResult GetAuthorByIdV1(string authorId)
+    public async Task<IActionResult> GetAuthorByIdV1(string authorId)
     {
         var query = new FindAuthorQuery
         {
             Id = Guid.Parse(authorId),
         };
 
-        var response = this.message.DispatchQuery(query);
+        var response = await this.message.DispatchQuery(query);
 
         var authorsV2 = new AuthorV1Dto
         {
@@ -104,14 +107,14 @@ public class AuthorsController : ControllerAPI//para web apis
     [HttpGet("{authorId}")]
     [MapToApiVersion("2.0")]
     //IActionResult te permite devolver diferentes typos de respuesta
-    public IActionResult GetAuthorByIdV2(string authorId)
+    public async Task<IActionResult> GetAuthorByIdV2(string authorId)
     {
         var query = new FindAuthorQuery
         {
             Id = Guid.Parse(authorId),
         };
 
-        var response = this.message.DispatchQuery(query);
+        var response = await this.message.DispatchQuery(query);
 
         var authorsV2 = new AuthorV2Dto
         {
@@ -131,7 +134,9 @@ public class AuthorsController : ControllerAPI//para web apis
 
 
     [HttpPost]
-    public IActionResult PostAuthorsV1(CreateAuthorV1Dto dto)
+    [ServiceFilter(typeof(LogActionFilter))]
+
+    public async Task<IActionResult> PostAuthorsV1(CreateAuthorV1Dto dto)
     {
         var command = new CreateAuthorCommand
         {
@@ -141,13 +146,15 @@ public class AuthorsController : ControllerAPI//para web apis
             DateOfDeath = dto.DateOfDeath,
             MainCategory = dto.MainCategory,
         };
-        var id = this.message.DispatchCommand(command);
+        var id = await this.message.DispatchCommand(command);
         return Ok(id);
     }
 
     [HttpPost]
     [MapToApiVersion("2.0")]
-    public IActionResult PostAuthorsV2(CreateAuthorV2Dto dto)
+    [ServiceFilter(typeof(LogActionFilter))]
+
+    public async Task<IActionResult> PostAuthorsV2(CreateAuthorV2Dto dto)
     {
         string[] values = dto.FullName.Split(',');
         var command = new CreateAuthorCommand
@@ -158,13 +165,15 @@ public class AuthorsController : ControllerAPI//para web apis
             DateOfDeath = dto.DateOfDeath,
             MainCategory = dto.MainCategory,
         };
-        var id = this.message.DispatchCommand(command);
+        var id = await this.message.DispatchCommand(command);
         return Ok(id);
     }
 
     [HttpPut("{authorId}/courses")]
     [ProducesResponseType(203)]
-    public IActionResult AddCourseToAuthorV1(string authorId, [FromBody] AddBookToAuthorV1Dto dto)
+    [ServiceFilter(typeof(LogActionFilter))]
+
+    public async Task<IActionResult> AddCourseToAuthorV1(string authorId, [FromBody] AddBookToAuthorV1Dto dto)
     {
         var comand = new AddBookToAuthorCommand
         {
@@ -172,14 +181,16 @@ public class AuthorsController : ControllerAPI//para web apis
             AuthorId = Guid.Parse(authorId),
             Description = dto.Description,
         };
-        var result = this.message.DispatchCommand(comand);
+        var result = await this.message.DispatchCommand(comand);
 
         return NoContent();
     }
 
     [HttpDelete("{authorId}/courses/{courseId}")]
     [ProducesResponseType(203)]
-    public IActionResult RemoveCourseFromAuthor(
+    [ServiceFilter(typeof(LogActionFilter))]
+
+    public async Task<IActionResult> RemoveCourseFromAuthor(
     string authorId, string courseId)
     {
         var command = new DeleteCourseFromAuthorCommand
@@ -188,7 +199,7 @@ public class AuthorsController : ControllerAPI//para web apis
             CourseId = Guid.Parse(courseId)
         };
 
-        var result = this.message.DispatchCommand(command);
+        var result = await this.message.DispatchCommand(command);
 
         return NoContent();
     }

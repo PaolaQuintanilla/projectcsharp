@@ -11,9 +11,9 @@ public class AddBookToAuthorCommandHandler : ICommandHandler<AddBookToAuthorComm
     {
         this.repository = repository;
     }
-    public Guid HandleAsync(AddBookToAuthorCommand command)
+    public async Task<Guid> HandleAsync(AddBookToAuthorCommand command)
     {
-        var author = this.repository.Find(command.AuthorId);
+        var author = await this.repository.FindAsync(command.AuthorId);
         if (author == null)
         {
             throw new ArgumentException("El autor no existe");
@@ -27,7 +27,7 @@ public class AddBookToAuthorCommandHandler : ICommandHandler<AddBookToAuthorComm
 
         author.Courses.Add(curso);
 
-        var result = this.repository.SaveChangesASync();
+        var result = await this.repository.SaveChangesASync();
 
         if (result < 1)
         {

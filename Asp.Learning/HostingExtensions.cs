@@ -38,7 +38,12 @@ public static class HostingExtensions
 
     public static void RegisterController(this IServiceCollection services)
     {
-        services.AddControllers();
+        services.AddControllers()
+            .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+            options.JsonSerializerOptions.MaxDepth = 64; // Opcional, para aumentar la profundidad máxima
+        });
     }
 
 
@@ -91,7 +96,7 @@ public static class HostingExtensions
     public static void RegisterFilters(this IServiceCollection services)
     {
         services.AddScoped<HandlerExceptionFilter>();
-        //services.AddScoped<LogActionFilter>();
+        services.AddScoped<LogActionFilter>();
         //services.AddScoped<LoggingResponseHeaderResultFilter>();
     }
 

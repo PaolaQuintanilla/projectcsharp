@@ -15,7 +15,7 @@ public class AuthorsWriteRepository : IWriteRepository<Author>
         _dbSet = context.Set<Author>();
     }
 
-    public Guid Add(Author entity)
+    public async Task<Guid> AddAsync(Author entity)
     {
         var result = this._dbSet.Add(entity);
 
@@ -23,7 +23,9 @@ public class AuthorsWriteRepository : IWriteRepository<Author>
         {
             throw new InvalidOperationException();
         }
-        var isSaved = this.context.SaveChanges();
+
+        //ejecucion a la base de datos
+        var isSaved = await this.context.SaveChangesAsync();
 
         if (isSaved == 0)
         {
@@ -33,14 +35,14 @@ public class AuthorsWriteRepository : IWriteRepository<Author>
         return entity.Id;
     }
 
-    public int SaveChangesASync()
+    public Task<int> SaveChangesASync()
     {
-        return this.context.SaveChanges();
+        return this.context.SaveChangesAsync();
     }
 
-    public Author Find(Guid id)
+    public async Task<Author> FindAsync(Guid id)
     {
-        var entity = _dbSet.Include((a) => a.Courses).FirstOrDefault(a => a.Id == id);
+        var entity = await _dbSet.Include((a) => a.Courses).FirstOrDefaultAsync(a => a.Id == id);
 
         if (entity is null)
         {

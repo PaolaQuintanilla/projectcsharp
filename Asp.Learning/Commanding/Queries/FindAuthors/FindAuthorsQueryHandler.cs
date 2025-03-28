@@ -11,9 +11,9 @@ namespace Asp.Learning.Commanding.Queries.FindAuthors
         {
             this.repository = repository;
         }
-        public IReadOnlyList<Author> Handle(FindAuthorsQuery query)
+        public Task<IReadOnlyList<Author>> Handle(FindAuthorsQuery query)
         {
-            return repository.Find();
+            return repository.FindAsync();
         }
     }
 }

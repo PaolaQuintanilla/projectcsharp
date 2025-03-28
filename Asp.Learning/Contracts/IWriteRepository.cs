@@ -2,7 +2,7 @@
 public interface IWriteRepository<T>
         where T : class
 {
-    Guid Add(T entity);
-    T Find(Guid id);
-    int SaveChangesASync();
+    Task<Guid> AddAsync(T entity);
+    Task<T> FindAsync(Guid id);
+    Task<int> SaveChangesASync();
 }

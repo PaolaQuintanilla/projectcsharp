@@ -11,9 +11,9 @@ namespace Asp.Learning.Commanding.Queries.FindAuthor
         {
             this.repository = repository;
         }
-        public Author Handle(FindAuthorQuery query)
+        public Task<Author> Handle(FindAuthorQuery query)
         {
-            return repository.Find(query.Id);
+            return repository.FindAsync(query.Id);
         }
     }
 }

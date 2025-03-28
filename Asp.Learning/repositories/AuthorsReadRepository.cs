@@ -15,14 +15,9 @@ public class AuthorsReadRepository : IReadRepository<Author>
         _dbSet = context.Set<Author>();
     }
 
-    public int SaveChangesASync()
+    public async Task<Author> FindAsync(Guid id)
     {
-        return this.context.SaveChanges();
-    }
-
-    public Author Find(Guid id)
-    {
-        var entity = _dbSet.Include((a) => a.Courses).FirstOrDefault(a => a.Id == id);
+        var entity = await _dbSet.Include((a) => a.Courses).FirstOrDefaultAsync(a => a.Id == id);
 
         if (entity is null)
         {
@@ -32,8 +27,11 @@ public class AuthorsReadRepository : IReadRepository<Author>
         return entity;
     }
 
-    public IReadOnlyList<Author> Find()
+    //await: espera la resolucion, y hace el thread se libera
+    //async: convierte el metodo en una maquina de estados
+    //task: contiene informacion del stado del lonng running task
+    public async Task<IReadOnlyList<Author>> FindAsync()
     {
-        return this._dbSet.Include((a) => a.Courses).ToList();
+        return await this._dbSet.Include((a) => a.Courses).ToListAsync();
     }
 }

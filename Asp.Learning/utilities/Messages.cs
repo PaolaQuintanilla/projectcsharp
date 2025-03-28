@@ -12,17 +12,17 @@ public class Message
     {
         this.provider = provider;
     }
-    public Guid DispatchCommand(ICommand command)
+    public async Task<Guid> DispatchCommand(ICommand command)
     {
         Type type = typeof(ICommandHandler<,>);
         Type[] args = { command.GetType(), typeof(Guid) };
         Type genericType = type.MakeGenericType(args);
 
         dynamic handler = provider.GetService(genericType);
-        return handler.HandleAsync((dynamic)command);
+        return await handler.HandleAsync((dynamic)command);
     }
 
-    public T DispatchQuery<T>(IQuery<T> query)
+    public async Task<T> DispatchQuery<T>(IQuery<T> query)
     {
         Type typeHandler = typeof(IQueryHandler<,>);
         Type[] args = { query.GetType(), typeof(T) };
@@ -30,7 +30,7 @@ public class Message
 
         dynamic handler = provider.GetService(genericType);
 
-        T result = handler.Handle((dynamic)query);
+        T result = await handler.Handle((dynamic)query);
 
         return result;
     }

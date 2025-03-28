@@ -3,7 +3,7 @@
     public interface IReadRepository<T>
         where T : class
     {
-        T Find(Guid id);
-        IReadOnlyList<T> Find();
+        Task<T> FindAsync(Guid id);
+        Task<IReadOnlyList<T>> FindAsync();
     }
 }
