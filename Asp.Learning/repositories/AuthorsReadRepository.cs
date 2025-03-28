@@ -26,7 +26,7 @@ public class AuthorsReadRepository : IReadRepository<Author>
 
         if (entity is null)
         {
-            throw new NullReferenceException();
+            throw new KeyNotFoundException($"No se encontró el autor con ID {id}");
         }
 
         return entity;

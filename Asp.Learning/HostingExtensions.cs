@@ -9,6 +9,7 @@ using Asp.Learning.Contracts;
 using Asp.Learning.repositories;
 using Asp.Learning.repositories.Entities;
 using Asp.Learning.utilities;
+using Asp.Learning.utilities.filters;
 using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,8 +26,8 @@ public static class HostingExtensions
             builder.RegisterDBContext();
             builder.Services.RegisterRespoitories();
             builder.Services.RegisterCommanding();
+            builder.Services.RegisterFilters();
             //builder.Services.RegisterCors();
-            //builder.Services.RegisterFilters();
         }
         catch (Exception ex)
         {
@@ -89,9 +90,9 @@ public static class HostingExtensions
 
     public static void RegisterFilters(this IServiceCollection services)
     {
+        services.AddScoped<HandlerExceptionFilter>();
         //services.AddScoped<LogActionFilter>();
         //services.AddScoped<LoggingResponseHeaderResultFilter>();
-        //services.AddScoped<HandlerExceptionFilter>();
     }
 
     public static void RegisterVersioning(this IServiceCollection services)

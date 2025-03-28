@@ -12,12 +12,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Asp.Learning.Controllers;
 
 //el json que se retorna de los endpoints es la vista en el patron mvc
-[ApiController]//simplifies creation of REST apis
 [Route("api/[controller]")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
 [ApiVersion(2.0, Deprecated = true)]
-public class AuthorsController : ControllerBase//para web apis
+public class AuthorsController : ControllerAPI//para web apis
 {
     private readonly Message message;
 
