@@ -1,4 +1,4 @@
-﻿namespace Asp.Learning.Commanding.Commands
+﻿namespace Asp.Learning.Commanding.Commands.CreateAuthor
 {
     public class CreateAuthorCommand : ICommand
     {

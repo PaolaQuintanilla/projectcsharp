@@ -1,7 +1,10 @@
 ﻿using Asp.Learning.Commanding.Commands;
 using Asp.Learning.Commanding.Commands.AddBookToAuthor;
+using Asp.Learning.Commanding.Commands.CreateAuthor;
 using Asp.Learning.Commanding.Commands.DeleteCourseFromAuthor;
 using Asp.Learning.Commanding.Queries;
+using Asp.Learning.Commanding.Queries.FindAuthor;
+using Asp.Learning.Commanding.Queries.FindAuthors;
 using Asp.Learning.Contracts;
 using Asp.Learning.repositories;
 using Asp.Learning.repositories.Entities;
@@ -41,7 +44,8 @@ public static class HostingExtensions
     //agregando service container
     public static void RegisterRespoitories(this IServiceCollection services)
     {
-        services.AddScoped<IRepository<Author>, AuthorsRepository>();
+        services.AddScoped<IWriteRepository<Author>, AuthorsWriteRepository>();
+        services.AddScoped<IReadRepository<Author>, AuthorsReadRepository>();
     }
 
     public static void RegisterCommanding(this IServiceCollection services)

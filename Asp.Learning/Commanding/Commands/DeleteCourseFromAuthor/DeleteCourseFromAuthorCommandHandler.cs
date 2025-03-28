@@ -5,9 +5,9 @@ namespace Asp.Learning.Commanding.Commands.DeleteCourseFromAuthor
 {
     public class DeleteCourseFromAuthorCommandHandler : ICommandHandler<DeleteCourseFromAuthorCommand, Guid>
     {
-        private readonly IRepository<Author> repository;
+        private readonly IWriteRepository<Author> repository;
 
-        public DeleteCourseFromAuthorCommandHandler(IRepository<Author> repository)
+        public DeleteCourseFromAuthorCommandHandler(IWriteRepository<Author> repository)
         {
             this.repository = repository;
         }

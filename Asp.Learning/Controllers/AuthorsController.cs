@@ -1,10 +1,10 @@
-using Asp.Learning.Commanding.Commands;
 using Asp.Learning.Commanding.Commands.AddBookToAuthor;
+using Asp.Learning.Commanding.Commands.CreateAuthor;
 using Asp.Learning.Commanding.Commands.DeleteCourseFromAuthor;
-using Asp.Learning.Commanding.Queries;
+using Asp.Learning.Commanding.Queries.FindAuthor;
+using Asp.Learning.Commanding.Queries.FindAuthors;
 using Asp.Learning.Dtos.requests;
 using Asp.Learning.Dtos.responses;
-using Asp.Learning.repositories.Entities;
 using Asp.Learning.utilities;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +39,12 @@ public class AuthorsController : ControllerBase//para web apis
             DateOfBirth = author.DateOfBirth,
             DateOfDeath = author.DateOfDeath,
             MainCategory = author.MainCategory,
+            Courses = author.Courses.Select(course => new CourseV1Dto
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Description = course.Description,
+            }).ToList()
         });
         return Ok(authorsV1);
     }
@@ -57,6 +63,11 @@ public class AuthorsController : ControllerBase//para web apis
             FullName = string.Format("{0} {1}", author.FirstName, author.LastName),
             DateOfBirth = author.DateOfBirth,
             MainCategory = author.MainCategory,
+            Courses = author.Courses.Select(course => new CourseV2Dto
+            {
+                Id = course.Id,
+                Title = course.Title,
+            }).ToList()
         });
         return Ok(authorsV2);
     }
@@ -68,7 +79,7 @@ public class AuthorsController : ControllerBase//para web apis
     {
         var query = new FindAuthorQuery
         {
-            Id  = Guid.Parse(authorId),
+            Id = Guid.Parse(authorId),
         };
 
         var response = this.message.DispatchQuery(query);

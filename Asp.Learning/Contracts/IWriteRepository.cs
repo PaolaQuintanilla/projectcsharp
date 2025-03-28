@@ -3,7 +3,6 @@ public interface IWriteRepository<T>
         where T : class
 {
     Guid Add(T entity);
-    void Update(T entity);
-    void Delete(T entity);
+    T Find(Guid id);
     int SaveChangesASync();
 }

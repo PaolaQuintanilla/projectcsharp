@@ -3,13 +3,13 @@ using Asp.Learning.repositories.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Asp.Learning.repositories;
-public class AuthorsRepository : IRepository<Author>
+public class AuthorsWriteRepository : IWriteRepository<Author>
 {
     private readonly LearningDbContext context;
     private readonly DbSet<Author> _dbSet;
 
 
-    public AuthorsRepository(LearningDbContext context)
+    public AuthorsWriteRepository(LearningDbContext context)
     {
         this.context = context;
         _dbSet = context.Set<Author>();
@@ -33,22 +33,6 @@ public class AuthorsRepository : IRepository<Author>
         return entity.Id;
     }
 
-    public void Delete(Author entity)
-    {
-        var result = this._dbSet
-            .Remove(entity);
-
-        if (result.State != EntityState.Deleted)
-        {
-            throw new InvalidOperationException();
-        }
-    }
-
-    public void Update(Author entity)
-    {
-        throw new NotImplementedException();
-    }
-
     public int SaveChangesASync()
     {
         return this.context.SaveChanges();
@@ -64,10 +48,5 @@ public class AuthorsRepository : IRepository<Author>
         }
 
         return entity;
-    }
-
-    public IReadOnlyList<Author> Find()
-    {
-        return this._dbSet.Include((a) => a.Courses).ToList();
     }
 }

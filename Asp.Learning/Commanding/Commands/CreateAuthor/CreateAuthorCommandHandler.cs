@@ -1,13 +1,13 @@
 ﻿using Asp.Learning.Contracts;
 using Asp.Learning.repositories.Entities;
 
-namespace Asp.Learning.Commanding.Commands;
+namespace Asp.Learning.Commanding.Commands.CreateAuthor;
 
 public class CreateAuthorCommandHandler : ICommandHandler<CreateAuthorCommand, Guid>
 {
-    private readonly IRepository<Author> repository;
+    private readonly IWriteRepository<Author> repository;
 
-    public CreateAuthorCommandHandler(IRepository<Author> repository)
+    public CreateAuthorCommandHandler(IWriteRepository<Author> repository)
     {
         this.repository = repository;
     }
@@ -21,6 +21,6 @@ public class CreateAuthorCommandHandler : ICommandHandler<CreateAuthorCommand, G
             DateOfDeath = command.DateOfDeath,
             MainCategory = command.MainCategory,
         };
-        return this.repository.Add(author);
+        return repository.Add(author);
     }
 }

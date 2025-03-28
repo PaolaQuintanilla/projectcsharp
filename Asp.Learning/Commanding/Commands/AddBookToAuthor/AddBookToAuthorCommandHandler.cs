@@ -5,9 +5,9 @@ namespace Asp.Learning.Commanding.Commands.AddBookToAuthor;
 
 public class AddBookToAuthorCommandHandler : ICommandHandler<AddBookToAuthorCommand, Guid>
 {
-    private readonly IRepository<Author> repository;
+    private readonly IWriteRepository<Author> repository;
 
-    public AddBookToAuthorCommandHandler(IRepository<Author> repository)
+    public AddBookToAuthorCommandHandler(IWriteRepository<Author> repository)
     {
         this.repository = repository;
     }

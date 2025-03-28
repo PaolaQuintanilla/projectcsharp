@@ -1,6 +1,6 @@
 ﻿using Asp.Learning.repositories.Entities;
 
-namespace Asp.Learning.Commanding.Queries
+namespace Asp.Learning.Commanding.Queries.FindAuthor
 {
     public class FindAuthorQuery : IQuery<Author>
     {
