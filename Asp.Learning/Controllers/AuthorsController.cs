@@ -1,9 +1,8 @@
 using Asp.Learning.Commanding.Commands;
+using Asp.Learning.Commanding.Commands.AddBookToAuthor;
 using Asp.Learning.Commanding.Queries;
 using Asp.Learning.Dtos.requests;
 using Asp.Learning.Dtos.responses;
-using Asp.Learning.repositories;
-using Asp.Learning.repositories.Entities;
 using Asp.Learning.utilities;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
@@ -90,5 +89,20 @@ public class AuthorsController : ControllerBase//para web apis
         };
         var id = this.message.DispatchCommand(command);
         return Ok(id);
+    }
+
+    [HttpPut("{authorId}/courses")]
+    [ProducesResponseType(203)]
+    public IActionResult AddCourseToAuthorV1(string authorId, [FromBody] AddBookToAuthorV1Dto dto)
+    {
+        var comand = new AddBookToAuthorCommand
+        {
+            Title = dto.Title,
+            AuthorId = Guid.Parse(authorId),
+            Description = dto.Description,
+        };
+        var result = this.message.DispatchCommand(comand);
+
+        return NoContent();
     }
 }

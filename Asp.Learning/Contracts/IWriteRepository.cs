@@ -5,5 +5,5 @@ public interface IWriteRepository<T>
     Guid Add(T entity);
     void Update(T entity);
     void Delete(T entity);
-    Task SaveChangesASync();
+    int SaveChangesASync();
 }

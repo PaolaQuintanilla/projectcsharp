@@ -18,6 +18,10 @@ public class Course
     public Author Author { get; set; } = null!;
 
     public Guid AuthorId { get; set; }
+    public Course()
+    {
+        
+    }
 
     public Course(string title)
     {

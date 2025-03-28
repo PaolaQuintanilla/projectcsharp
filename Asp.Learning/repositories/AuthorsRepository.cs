@@ -49,12 +49,12 @@ public class AuthorsRepository : IRepository<Author>
         throw new NotImplementedException();
     }
 
-    public async Task SaveChangesASync()
+    public int SaveChangesASync()
     {
-        await this.context.SaveChangesAsync();
+        return this.context.SaveChanges();
     }
 
-    public Author Find(int id)
+    public Author Find(Guid id)
     {
         var entity = _dbSet.Find(id);
 
