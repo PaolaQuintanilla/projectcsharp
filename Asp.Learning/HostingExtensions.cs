@@ -27,6 +27,11 @@ public static class HostingExtensions
             builder.Services.RegisterRespoitories();
             builder.Services.RegisterCommanding();
             builder.Services.RegisterFilters();
+            builder.Services.AddControllers(configure =>
+            {
+                configure.ReturnHttpNotAcceptable = true;
+            }).AddXmlDataContractSerializerFormatters();
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //builder.Services.RegisterCors();
         }
         catch (Exception ex)

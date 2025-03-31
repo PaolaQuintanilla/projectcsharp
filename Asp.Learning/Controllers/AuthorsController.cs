@@ -9,11 +9,13 @@ using Asp.Learning.repositories.Entities;
 using Asp.Learning.utilities;
 using Asp.Learning.utilities.filters;
 using Asp.Versioning;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Asp.Learning.Controllers;
 
 //el json que se retorna de los endpoints es la vista en el patron mvc
+[ApiController]
 [Route("api/[controller]")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiVersion("1.0")]
@@ -21,17 +23,19 @@ namespace Asp.Learning.Controllers;
 public class AuthorsController : ControllerAPI//para web apis
 {
     private readonly Message message;
+    private readonly IMapper _mapper;
 
-    public AuthorsController(Message message)
+    public AuthorsController(Message message, IMapper mapper)
     {
         this.message = message;
+        this._mapper = mapper;
     }
 
     [HttpGet]
     //IActionResult te permite devolver diferentes typos de respuesta
-    public async Task<IActionResult> GetAuthorsV1()
+    public async Task<IActionResult> GetAuthorsV1([FromQuery] string? mainCategory = "")
     {
-        var response = await this.message.DispatchQuery(new FindAuthorsQuery());
+        var response = await this.message.DispatchQuery(new FindAuthorsQuery { MainCategory= mainCategory });
         var authorsV1 = response.Select(author => new AuthorV1Dto
         {
             Id = author.Id,
@@ -135,25 +139,18 @@ public class AuthorsController : ControllerAPI//para web apis
 
     [HttpPost]
     [ServiceFilter(typeof(LogActionFilter))]
-
     public async Task<IActionResult> PostAuthorsV1(CreateAuthorV1Dto dto)
     {
-        var command = new CreateAuthorCommand
-        {
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            DateOfBirth = dto.DateOfBirth,
-            DateOfDeath = dto.DateOfDeath,
-            MainCategory = dto.MainCategory,
-        };
-        var id = await this.message.DispatchCommand(command);
-        return Ok(id);
+        var authorCommand = _mapper.Map<CreateAuthorCommand>(dto);
+
+        var id = await this.message.DispatchCommand(authorCommand);
+
+        return CreatedAtAction(actionName: nameof(GetAuthorByIdV1), routeValues: new { authorId = id }, value: id);
     }
 
     [HttpPost]
     [MapToApiVersion("2.0")]
     [ServiceFilter(typeof(LogActionFilter))]
-
     public async Task<IActionResult> PostAuthorsV2(CreateAuthorV2Dto dto)
     {
         string[] values = dto.FullName.Split(',');
@@ -173,7 +170,7 @@ public class AuthorsController : ControllerAPI//para web apis
     [ProducesResponseType(203)]
     [ServiceFilter(typeof(LogActionFilter))]
 
-    public async Task<IActionResult> AddCourseToAuthorV1(string authorId, [FromBody] AddBookToAuthorV1Dto dto)
+    public async Task<IActionResult> AddCourseToAuthorV1(string authorId, [FromBody] AddCourseToAuthorV1Dto dto)
     {
         var comand = new AddBookToAuthorCommand
         {

@@ -13,7 +13,7 @@ namespace Asp.Learning.Commanding.Queries.FindAuthors
         }
         public Task<IReadOnlyList<Author>> Handle(FindAuthorsQuery query)
         {
-            return repository.FindAsync();
+            return repository.FindAsync(query.MainCategory);
         }
     }
 }

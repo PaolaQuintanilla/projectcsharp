@@ -39,6 +39,18 @@ public class AuthorsCacheRepository : IReadRepository<Author>
 
         return authorsChache;
     }
+
+    public async Task<IReadOnlyList<Author>> FindAsync(string mainCategory)
+    {
+        var authorsChache = this.redis.Find();
+
+        if (authorsChache.Count() == 0)
+        {
+            return await this.repository.FindAsync(mainCategory);
+        }
+
+        return authorsChache.Where((a) => a.MainCategory == mainCategory).ToList();
+    }
 }
 
 public class RedisCache

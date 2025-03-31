@@ -3,6 +3,7 @@ using Asp.Learning.Commanding.Commands.AddBookToAuthor;
 using Asp.Learning.Commanding.Commands.CreateAuthor;
 using Asp.Learning.Contracts;
 using Asp.Learning.repositories.Entities;
+using AutoMapper;
 using Moq;
 
 namespace Asp.Learning.Csharp.UnitTests.Commands
@@ -15,10 +16,11 @@ namespace Asp.Learning.Csharp.UnitTests.Commands
         {
             //***** CONSTRUCTOR CONTEXT *****//////
             var repo = new Mock<IWriteRepository<Author>>();
+            var mapper = new Mock<IMapper>();
             repo.Setup(x => x.AddAsync(It.IsAny<Author>()))
                 .ReturnsAsync(Guid.NewGuid);
 
-            commandHandler = new CreateAuthorCommandHandler(repo.Object);
+            commandHandler = new CreateAuthorCommandHandler(mapper.Object, repo.Object);
         }
 
         [Theory]

@@ -34,4 +34,16 @@ public class AuthorsReadRepository : IReadRepository<Author>
     {
         return await this._dbSet.Include((a) => a.Courses).ToListAsync();
     }
+
+    public async Task<IReadOnlyList<Author>> FindAsync(string? mainCategory)
+    {
+        if(string.IsNullOrWhiteSpace(mainCategory))
+        {
+            return await FindAsync();
+        }
+
+        mainCategory = mainCategory.Trim();
+
+        return await this._dbSet.Where((a) => a.MainCategory == mainCategory).ToListAsync();
+    }
 }

@@ -7,5 +7,6 @@
         public DateTimeOffset DateOfBirth { get; set; }
         public DateTimeOffset? DateOfDeath { get; set; }
         public string MainCategory { get; set; }
+        public ICollection<AddCourseToAuthorV1Dto> Courses { get; set; } = new List<AddCourseToAuthorV1Dto>();
     }
 }
