@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asp.Learning.Csharp.UnitTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "C#.Concepts", "tests\C#.Concepts\C#.Concepts.csproj", "{A867E27A-30A2-44E5-B449-42F4A1611E6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asp.Learning.GraphQL", "src\Asp.Learning.GraphQL\Asp.Learning.GraphQL.csproj", "{897E3A00-E4C5-4FF5-B5C2-AE0B043AA50C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{A867E27A-30A2-44E5-B449-42F4A1611E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A867E27A-30A2-44E5-B449-42F4A1611E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A867E27A-30A2-44E5-B449-42F4A1611E6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{897E3A00-E4C5-4FF5-B5C2-AE0B043AA50C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{897E3A00-E4C5-4FF5-B5C2-AE0B043AA50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{897E3A00-E4C5-4FF5-B5C2-AE0B043AA50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{897E3A00-E4C5-4FF5-B5C2-AE0B043AA50C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{6E6A9846-1C17-4BF1-8EDF-4C4F52C10247} = {920CB617-1962-4A8B-A761-DB4A5B328198}
 		{D8CF8641-A64E-4D92-AB63-302C221B844A} = {FA40A6F6-3554-4422-90B8-CFCCEFBB5EFF}
 		{A867E27A-30A2-44E5-B449-42F4A1611E6B} = {FA40A6F6-3554-4422-90B8-CFCCEFBB5EFF}
+		{897E3A00-E4C5-4FF5-B5C2-AE0B043AA50C} = {920CB617-1962-4A8B-A761-DB4A5B328198}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DB4527BD-5133-4DEE-8B27-16E00B598DBC}

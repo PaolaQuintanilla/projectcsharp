@@ -1,0 +1,6 @@
+@Asp.Learning.GraphQL_HostAddress = http://localhost:5089
+
+GET {{Asp.Learning.GraphQL_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
