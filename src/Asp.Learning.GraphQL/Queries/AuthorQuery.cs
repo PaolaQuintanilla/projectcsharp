@@ -13,10 +13,10 @@ public class AuthorQuery
         this.repository = repository;
     }
 
-    public async Task<IEnumerable<AuthorDto>> GetAuthors()
+    public async Task<IEnumerable<AuthorType>> GetAuthors()
     {
         var response = await this.repository.FindAsync();
-        var authors = response.Select(author => new AuthorDto
+        var authors = response.Select(author => new AuthorType
         {
             Id = author.Id,
             FirstName = author.FirstName,
