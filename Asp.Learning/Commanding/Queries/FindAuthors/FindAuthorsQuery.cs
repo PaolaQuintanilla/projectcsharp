@@ -1,7 +1,9 @@
-﻿using Asp.Learning.repositories.Entities;
+﻿using Asp.Learning.Helpers;
+using Asp.Learning.repositories.Entities;
+using Asp.Learning.ResourceParameters;
 
 namespace Asp.Learning.Commanding.Queries.FindAuthors;
-public class FindAuthorsQuery : IQuery<IReadOnlyList<Author>>
+public class FindAuthorsQuery : IQuery<PagedList<Author>>
 {
-    public string MainCategory { get; set; }
+    public AuthorResourceParameters AuthorResourceParameters { get; set; }
 }

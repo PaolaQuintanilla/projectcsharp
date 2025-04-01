@@ -1,5 +1,7 @@
 ﻿using Asp.Learning.Contracts;
+using Asp.Learning.Helpers;
 using Asp.Learning.repositories.Entities;
+using Asp.Learning.ResourceParameters;
 
 namespace Asp.Learning.repositories;
 
@@ -40,16 +42,31 @@ public class AuthorsCacheRepository : IReadRepository<Author>
         return authorsChache;
     }
 
-    public async Task<IReadOnlyList<Author>> FindAsync(string mainCategory)
+    public async Task<PagedList<Author>> FindAsync(AuthorResourceParameters authorResourceParameters)
     {
         var authorsChache = this.redis.Find();
 
         if (authorsChache.Count() == 0)
         {
-            return await this.repository.FindAsync(mainCategory);
+            return await this.repository.FindAsync(authorResourceParameters);
         }
 
-        return authorsChache.Where((a) => a.MainCategory == mainCategory).ToList();
+        if (!string.IsNullOrWhiteSpace(authorResourceParameters.MainCategory))
+        {
+            var mainCategory = authorResourceParameters.MainCategory.Trim();
+            authorsChache = authorsChache.Where((a) => a.MainCategory == mainCategory).ToList();
+        }
+
+        if (!string.IsNullOrWhiteSpace(authorResourceParameters.SearchQuery))
+        {
+            var searchQuery = authorResourceParameters.SearchQuery.Trim();
+            authorsChache = authorsChache.Where((a) => a.MainCategory.Contains(searchQuery)
+                || a.FirstName.Contains(searchQuery)
+                || a.LastName.Contains(searchQuery)).ToList();
+        }
+
+        return await PagedList<Author>.CreateAsync(authorsChache.AsQueryable(), authorResourceParameters.PageNumber,
+            authorResourceParameters.PageSize);
     }
 }
 

@@ -6,6 +6,7 @@ using Asp.Learning.Commanding.Queries.FindAuthors;
 using Asp.Learning.Dtos.requests;
 using Asp.Learning.Dtos.responses;
 using Asp.Learning.repositories.Entities;
+using Asp.Learning.ResourceParameters;
 using Asp.Learning.utilities;
 using Asp.Learning.utilities.filters;
 using Asp.Versioning;
@@ -33,9 +34,9 @@ public class AuthorsController : ControllerAPI//para web apis
 
     [HttpGet]
     //IActionResult te permite devolver diferentes typos de respuesta
-    public async Task<IActionResult> GetAuthorsV1([FromQuery] string? mainCategory = "")
+    public async Task<IActionResult> GetAuthorsV1([FromQuery] AuthorResourceParameters authorResourceParameters)
     {
-        var response = await this.message.DispatchQuery(new FindAuthorsQuery { MainCategory= mainCategory });
+        var response = await this.message.DispatchQuery(new FindAuthorsQuery { AuthorResourceParameters = authorResourceParameters });
         var authorsV1 = response.Select(author => new AuthorV1Dto
         {
             Id = author.Id,

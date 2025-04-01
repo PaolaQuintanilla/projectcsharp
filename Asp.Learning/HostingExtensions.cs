@@ -6,6 +6,7 @@ using Asp.Learning.Commanding.Queries;
 using Asp.Learning.Commanding.Queries.FindAuthor;
 using Asp.Learning.Commanding.Queries.FindAuthors;
 using Asp.Learning.Contracts;
+using Asp.Learning.Helpers;
 using Asp.Learning.repositories;
 using Asp.Learning.repositories.Entities;
 using Asp.Learning.utilities;
@@ -68,7 +69,7 @@ public static class HostingExtensions
         services.AddScoped<ICommandHandler<CreateAuthorCommand, Guid>, CreateAuthorCommandHandler>();
         services.AddScoped<ICommandHandler<AddBookToAuthorCommand, Guid>, AddBookToAuthorCommandHandler>();
         services.AddScoped<ICommandHandler<DeleteCourseFromAuthorCommand, Guid>, DeleteCourseFromAuthorCommandHandler>();
-        services.AddScoped<IQueryHandler<FindAuthorsQuery, IReadOnlyList<Author>>, FindAuthorsQueryHandler>();
+        services.AddScoped<IQueryHandler<FindAuthorsQuery, PagedList<Author>>, FindAuthorsQueryHandler>();
         services.AddScoped<IQueryHandler<FindAuthorQuery, Author>, FindAuthorQueryHandler>();
     }
 

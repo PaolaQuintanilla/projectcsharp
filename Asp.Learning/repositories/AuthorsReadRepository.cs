@@ -1,5 +1,7 @@
 ﻿using Asp.Learning.Contracts;
+using Asp.Learning.Helpers;
 using Asp.Learning.repositories.Entities;
+using Asp.Learning.ResourceParameters;
 using Microsoft.EntityFrameworkCore;
 
 namespace Asp.Learning.repositories;
@@ -35,15 +37,31 @@ public class AuthorsReadRepository : IReadRepository<Author>
         return await this._dbSet.Include((a) => a.Courses).ToListAsync();
     }
 
-    public async Task<IReadOnlyList<Author>> FindAsync(string? mainCategory)
+    public async Task<PagedList<Author>> FindAsync(AuthorResourceParameters authorResourceParameters)
     {
-        if(string.IsNullOrWhiteSpace(mainCategory))
+        //if(authorResourceParameters == null)
+        //{
+        //    return await FindAsync();
+        //}
+
+        var collection = this._dbSet.AsQueryable();
+
+        if(!string.IsNullOrWhiteSpace(authorResourceParameters.MainCategory))
         {
-            return await FindAsync();
+            var mainCategory = authorResourceParameters.MainCategory.Trim();
+            collection = collection.Where((a) => a.MainCategory == mainCategory);
         }
 
-        mainCategory = mainCategory.Trim();
+        if (!string.IsNullOrWhiteSpace(authorResourceParameters.SearchQuery))
+        {
+            var searchQuery = authorResourceParameters.SearchQuery.Trim();
+            collection = collection.Where((a) => a.MainCategory.Contains(searchQuery) 
+                || a.FirstName.Contains(searchQuery)
+                || a.LastName.Contains(searchQuery));
+        }
 
-        return await this._dbSet.Where((a) => a.MainCategory == mainCategory).ToListAsync();
+        return await PagedList<Author>.CreateAsync(collection, 
+            authorResourceParameters.PageNumber, 
+            authorResourceParameters.PageSize);
     }
 }

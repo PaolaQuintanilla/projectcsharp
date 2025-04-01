@@ -1,9 +1,10 @@
 ﻿using Asp.Learning.Contracts;
+using Asp.Learning.Helpers;
 using Asp.Learning.repositories.Entities;
 
 namespace Asp.Learning.Commanding.Queries.FindAuthors
 {
-    public class FindAuthorsQueryHandler : IQueryHandler<FindAuthorsQuery, IReadOnlyList<Author>>
+    public class FindAuthorsQueryHandler : IQueryHandler<FindAuthorsQuery, PagedList<Author>>
     {
         private readonly IReadRepository<Author> repository;
 
@@ -11,9 +12,9 @@ namespace Asp.Learning.Commanding.Queries.FindAuthors
         {
             this.repository = repository;
         }
-        public Task<IReadOnlyList<Author>> Handle(FindAuthorsQuery query)
+        public Task<PagedList<Author>> Handle(FindAuthorsQuery query)
         {
-            return repository.FindAsync(query.MainCategory);
+            return repository.FindAsync(query.AuthorResourceParameters);
         }
     }
 }
