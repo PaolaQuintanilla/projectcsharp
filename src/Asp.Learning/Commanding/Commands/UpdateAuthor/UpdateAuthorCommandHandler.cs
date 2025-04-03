@@ -23,6 +23,13 @@ namespace Asp.Learning.Commanding.Commands.UpdateAuthor
             //author.DateOfDeath = command.DateOfDeath;
             //author.MainCategory = command.MainCategory;
 
+            if (author is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            author.Update(command.FirstName, command.LastName, command.MainCategory, command.DateOfBirth, command.DateOfDeath);
+
             await repository.SaveChangesASync();
 
             return author.Id;

@@ -96,6 +96,7 @@ public class AuthorsController : ControllerAPI//para web apis
             FirstName = response.FirstName,
             LastName = response.LastName,
             DateOfBirth = response.DateOfBirth,
+            DateOfDeath = response.DateOfDeath,
             MainCategory = response.MainCategory,
             Courses = response.Courses.Select(course => new CourseV1Dto
             {

@@ -52,4 +52,38 @@ public class Author
 
         return new Author(firstName, lastName, mainCategory, birth, deatch);
     }
+
+    public Author Update(string firstName, string lastName, string mainCategory, DateTimeOffset birth, DateTimeOffset? deatch)
+    {
+        if (string.IsNullOrWhiteSpace(firstName))
+        {
+            return null;
+        }
+        firstName = firstName.Trim();
+
+        if (string.IsNullOrWhiteSpace(lastName))
+        {
+            return null;
+        }
+
+        _firstName = firstName;
+        _lastName = lastName;
+        _dateOfBirth = birth;
+        _dateOfDeath = deatch;
+        _mainCategory = mainCategory;
+
+        return this;
+    }
+
+    public Author AddCourse(Course curso)
+    {
+        if (this.Courses.Any(course => course.Title.Equals(curso.Title)))
+        {
+            return null;
+        }
+
+        this._courses.Add(curso);
+
+        return this;
+    }
 }

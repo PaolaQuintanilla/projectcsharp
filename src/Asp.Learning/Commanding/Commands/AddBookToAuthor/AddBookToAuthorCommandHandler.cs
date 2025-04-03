@@ -25,7 +25,7 @@ public class AddBookToAuthorCommandHandler : ICommandHandler<AddBookToAuthorComm
         );
 
 
-        author.Courses.Add(curso);
+        author.AddCourse(curso);
 
         var result = await this.repository.SaveChangesASync();
 

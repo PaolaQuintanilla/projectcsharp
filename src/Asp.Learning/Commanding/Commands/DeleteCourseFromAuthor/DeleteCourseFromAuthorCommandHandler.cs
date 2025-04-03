@@ -15,13 +15,19 @@ namespace Asp.Learning.Commanding.Commands.DeleteCourseFromAuthor
         {
             var author = await this.repository.FindAsync(command.AuthorId);
 
-            var course = author.Courses.FirstOrDefault(course => course.Id == command.CourseId);
-
-            if (course != null)
+            if (author is null)
             {
-                author.Courses.Remove(course);
+                throw new ArgumentException();
             }
 
+            var course = author.Courses.FirstOrDefault(course => course.Id == command.CourseId);
+
+            if (course == null)
+            {
+                throw new ArgumentException();
+            }
+
+            author.Courses.Remove(course);
             await this.repository.SaveChangesASync();
             
             return command.CourseId;

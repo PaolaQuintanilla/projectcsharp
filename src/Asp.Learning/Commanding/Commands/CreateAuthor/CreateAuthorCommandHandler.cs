@@ -25,6 +25,11 @@ public class CreateAuthorCommandHandler : ICommandHandler<CreateAuthorCommand, G
             command.DateOfDeath
         );
 
+        if (author == null) 
+        {
+            return null;
+        }
+
         return repository.AddAsync(author);
     }
 }
