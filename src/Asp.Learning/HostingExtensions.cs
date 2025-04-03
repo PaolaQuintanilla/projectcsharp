@@ -2,6 +2,7 @@
 using Asp.Learning.Commanding.Commands.AddBookToAuthor;
 using Asp.Learning.Commanding.Commands.CreateAuthor;
 using Asp.Learning.Commanding.Commands.DeleteCourseFromAuthor;
+using Asp.Learning.Commanding.Commands.UpdateAuthor;
 using Asp.Learning.Commanding.Queries;
 using Asp.Learning.Commanding.Queries.FindAuthor;
 using Asp.Learning.Commanding.Queries.FindAuthors;
@@ -69,6 +70,7 @@ public static class HostingExtensions
         services.AddScoped<ICommandHandler<CreateAuthorCommand, Guid>, CreateAuthorCommandHandler>();
         services.AddScoped<ICommandHandler<AddBookToAuthorCommand, Guid>, AddBookToAuthorCommandHandler>();
         services.AddScoped<ICommandHandler<DeleteCourseFromAuthorCommand, Guid>, DeleteCourseFromAuthorCommandHandler>();
+        services.AddScoped<ICommandHandler<UpdateAuthorCommand, Guid>, UpdateAuthorCommandHandler>();
         services.AddScoped<IQueryHandler<FindAuthorsQuery, IReadOnlyList<Author>>, FindAuthorsQueryHandler>();
         services.AddScoped<IQueryHandler<FindAuthorQuery, Author>, FindAuthorQueryHandler>();
     }

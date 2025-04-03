@@ -1,6 +1,7 @@
 using Asp.Learning.Commanding.Commands.AddBookToAuthor;
 using Asp.Learning.Commanding.Commands.CreateAuthor;
 using Asp.Learning.Commanding.Commands.DeleteCourseFromAuthor;
+using Asp.Learning.Commanding.Commands.UpdateAuthor;
 using Asp.Learning.Commanding.Queries.FindAuthor;
 using Asp.Learning.Commanding.Queries.FindAuthors;
 using Asp.Learning.Dtos.requests;
@@ -138,7 +139,7 @@ public class AuthorsController : ControllerAPI//para web apis
 
     [HttpPost]
     [ServiceFilter(typeof(LogActionFilter))]
-    public async Task<IActionResult> PostAuthorsV1(CreateAuthorV1Dto dto)
+    public async Task<IActionResult> CreateAuthorsV1(CreateAuthorV1Dto dto)
     {
         var authorCommand = _mapper.Map<CreateAuthorCommand>(dto);
 
@@ -147,10 +148,32 @@ public class AuthorsController : ControllerAPI//para web apis
         return CreatedAtAction(actionName: nameof(GetAuthorByIdV1), routeValues: new { authorId = id }, value: id);
     }
 
+    [HttpPut("{authorId}")]
+    public async Task<IActionResult> UpdateAuthorsV1(string authorId, UpdateAuthorV1Dto dto)
+    {
+        
+        var authorCommand = _mapper.Map<UpdateAuthorCommand>(dto);
+        authorCommand.Id =  Guid.Parse(authorId);
+
+        var id = await this.message.DispatchCommand(authorCommand);
+
+        return NoContent();
+    }
+
+    //[HttpDelete]
+    //public async Task<IActionResult> DeleteAuthorsV1( dto)
+    //{
+    //    var authorCommand = _mapper.Map<CreateAuthorCommand>(dto);
+
+    //    var id = await this.message.DispatchCommand(authorCommand);
+
+    //    return CreatedAtAction(actionName: nameof(GetAuthorByIdV1), routeValues: new { authorId = id }, value: id);
+    //}
+
     [HttpPost]
     [MapToApiVersion("2.0")]
     [ServiceFilter(typeof(LogActionFilter))]
-    public async Task<IActionResult> PostAuthorsV2(CreateAuthorV2Dto dto)
+    public async Task<IActionResult> CreateAuthorsV2(CreateAuthorV2Dto dto)
     {
         string[] values = dto.FullName.Split(',');
         var command = new CreateAuthorCommand

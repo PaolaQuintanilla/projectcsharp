@@ -4,7 +4,7 @@ using Asp.Learning.repositories;
 using Asp.Learning.repositories.Entities;
 using Asp.Learning.repositories.Services;
 using Microsoft.EntityFrameworkCore;
-
+//https://chillicream.com/docs/hotchocolate/v13/defining-a-schema/object-types
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -20,6 +20,16 @@ builder.Services.AddScoped<IReadRepository<Author>>(provider =>
 builder.Services.AddDbContext<LearningDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("conectionDb")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowSpecificOrigins", builder =>
+    {
+        builder.AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin();
+    });
+});
+
 builder.Services
     .AddGraphQLServer()
     .AddQueryType<AuthorQuery>()
@@ -33,6 +43,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowSpecificOrigins");
 
 app.UseRouting(); // Required for HotChocolate
 
