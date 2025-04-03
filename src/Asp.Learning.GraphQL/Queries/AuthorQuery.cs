@@ -1,6 +1,6 @@
 ﻿using Asp.Learning.Contracts.Services;
 using Asp.Learning.GraphQl.Types;
-using Asp.Learning.repositories.Entities;
+using Asp.Learning.Services.domain;
 
 namespace Asp.Learning.GraphQL.Queries;
 

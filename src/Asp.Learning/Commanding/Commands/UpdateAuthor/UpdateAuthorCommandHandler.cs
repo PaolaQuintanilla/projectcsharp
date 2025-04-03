@@ -1,6 +1,6 @@
 ﻿
 using Asp.Learning.Contracts.Services;
-using Asp.Learning.repositories.Entities;
+using Asp.Learning.Services.domain;
 using AutoMapper;
 
 namespace Asp.Learning.Commanding.Commands.UpdateAuthor
@@ -17,11 +17,11 @@ namespace Asp.Learning.Commanding.Commands.UpdateAuthor
         public async Task<Guid> HandleAsync(UpdateAuthorCommand command)
         {
             var author = await repository.FindAsync(command.Id);
-            author.FirstName = command.FirstName;
-            author.LastName = command.LastName;
-            author.DateOfBirth = command.DateOfBirth;
-            author.DateOfDeath = command.DateOfDeath;
-            author.MainCategory = command.MainCategory;
+            //author.FirstName = command.FirstName;
+            //author.LastName = command.LastName;
+            //author.DateOfBirth = command.DateOfBirth;
+            //author.DateOfDeath = command.DateOfDeath;
+            //author.MainCategory = command.MainCategory;
 
             await repository.SaveChangesASync();
 

@@ -1,5 +1,5 @@
 ﻿using Asp.Learning.Contracts.Services;
-using Asp.Learning.repositories.Entities;
+using Asp.Learning.Services.domain;
 
 namespace Asp.Learning.Commanding.Commands.AddBookToAuthor;
 
@@ -19,11 +19,11 @@ public class AddBookToAuthorCommandHandler : ICommandHandler<AddBookToAuthorComm
             throw new ArgumentException("El autor no existe");
         }
 
-        var curso = new Course
-        {
-            Description = command.Description,
-            Title = command.Title,
-        };
+        var curso = Course.CreateNew(
+            command.Title,
+            command.Description
+        );
+
 
         author.Courses.Add(curso);
 

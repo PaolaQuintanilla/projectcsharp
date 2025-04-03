@@ -1,5 +1,6 @@
 ﻿using Asp.Learning.Contracts.Services;
-using Asp.Learning.repositories.Entities;
+using Asp.Learning.Services.domain;
+using Asp.Learning.Services.repositories.context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Asp.Learning.repositories;

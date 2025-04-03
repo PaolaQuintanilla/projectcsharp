@@ -1,6 +1,6 @@
 ﻿using Asp.Learning.Contracts.Services;
 using Asp.Learning.Dtos.responses;
-using Asp.Learning.repositories.Entities;
+using Asp.Learning.Services.domain;
 using AutoMapper;
 
 namespace Asp.Learning.Commanding.Commands.CreateAuthor;
@@ -17,14 +17,14 @@ public class CreateAuthorCommandHandler : ICommandHandler<CreateAuthorCommand, G
     public Task<Guid> HandleAsync(CreateAuthorCommand command)
     {
         //var authorEntity = _mapper.Map<Author>(command);
-        var author = new Author
-        {
-            FirstName = command.FirstName,
-            LastName = command.LastName,
-            DateOfBirth = command.DateOfBirth,
-            DateOfDeath = command.DateOfDeath,
-            MainCategory = command.MainCategory,
-        };
+        var author = Author.CreateNew(
+            command.FirstName,
+            command.LastName,
+            command.MainCategory,
+            command.DateOfBirth,
+            command.DateOfDeath
+        );
+
         return repository.AddAsync(author);
     }
 }

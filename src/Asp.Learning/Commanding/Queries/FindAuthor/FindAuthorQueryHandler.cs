@@ -1,5 +1,5 @@
 ﻿using Asp.Learning.Contracts.Services;
-using Asp.Learning.repositories.Entities;
+using Asp.Learning.Services.domain;
 
 namespace Asp.Learning.Commanding.Queries.FindAuthor
 {

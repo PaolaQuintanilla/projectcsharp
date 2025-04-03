@@ -1,8 +1,9 @@
 using Asp.Learning.Contracts.Services;
 using Asp.Learning.GraphQL.Queries;
 using Asp.Learning.repositories;
-using Asp.Learning.repositories.Entities;
 using Asp.Learning.repositories.Services;
+using Asp.Learning.Services.domain;
+using Asp.Learning.Services.repositories.context;
 using Microsoft.EntityFrameworkCore;
 //https://chillicream.com/docs/hotchocolate/v13/defining-a-schema/object-types
 var builder = WebApplication.CreateBuilder(args);

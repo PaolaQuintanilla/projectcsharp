@@ -3,7 +3,7 @@ using Asp.Learning.Commanding.Commands.AddBookToAuthor;
 using Asp.Learning.Commanding.Commands.CreateAuthor;
 using Asp.Learning.Contracts;
 using Asp.Learning.Contracts.Services;
-using Asp.Learning.repositories.Entities;
+using Asp.Learning.Services.domain;
 using AutoMapper;
 using Moq;
 
