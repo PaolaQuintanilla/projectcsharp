@@ -5,6 +5,7 @@ using Asp.Learning.Commanding.Queries.FindAuthor;
 using Asp.Learning.Commanding.Queries.FindAuthors;
 using Asp.Learning.Dtos.requests;
 using Asp.Learning.Dtos.responses;
+using Asp.Learning.Helpers;
 using Asp.Learning.repositories.Entities;
 using Asp.Learning.ResourceParameters;
 using Asp.Learning.utilities;
@@ -37,6 +38,9 @@ public class AuthorsController : ControllerAPI//para web apis
     public async Task<IActionResult> GetAuthorsV1([FromQuery] AuthorResourceParameters authorResourceParameters)
     {
         var response = await this.message.DispatchQuery(new FindAuthorsQuery { AuthorResourceParameters = authorResourceParameters });
+        
+        var previousPageLink = response.HasPrevious? CreateAuthorCommand(authorResourceParameters, );
+        
         var authorsV1 = response.Select(author => new AuthorV1Dto
         {
             Id = author.Id,
@@ -78,6 +82,32 @@ public class AuthorsController : ControllerAPI//para web apis
         });
         return Ok(authorsV2);
     }
+
+        private string? CreateAuthorsResourceUri(
+        AuthorResourceParameters authorsResourceParameters,
+        ResourceUriType type){
+            switch (type)
+            {
+                case ResourceUriType.PreviousPage:
+                return Url.Link("GetAuthors",
+                    new
+                    {
+                        pageNumber = authorsResourceParameters.PageNumber - 1,
+                        pageSize = authorsResourceParameters.PageSize,
+                        mainCategory = authorsResourceParameters.MainCategory,
+                        searchQuery = authorsResourceParameters.SearchQuery
+                    }); 
+                case ResourceUriType.NextPage:
+                return Url.Link("GetAuthors",
+                    new
+                    {
+                        pageNumber = authorsResourceParameters.PageNumber + 1,
+                        pageSize = authorsResourceParameters.PageSize,
+                        mainCategory = authorsResourceParameters.MainCategory,
+                        searchQuery = authorsResourceParameters.SearchQuery
+                    });
+            }
+        }
 
     [HttpGet("{authorId}")]
     //[ApiVersion(1.0, Deprecated = true)]
