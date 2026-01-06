@@ -20,7 +20,7 @@ namespace C_.Concepts
         public void CloneArray()
         {
             int[] array = new CustomArray().GetIntegers();
-            var array2 = array.Clone();
+            var array2 = array.Clone();//shalow copy
             Assert.Equal(array, array2);
         }
 
@@ -44,10 +44,10 @@ namespace C_.Concepts
         public void IndexOfArray()
         {
             int[] array = new CustomArray().GetIntegers();
-            int number = Array.IndexOf(array, 5);
-            int number2 = Array.IndexOf(array, 9);
-            Assert.Equal(0, number);
-            Assert.Equal(2, number2);
+            int indexOne = Array.IndexOf(array, 5);
+            int indexTwo = Array.IndexOf(array, 9);
+            Assert.Equal(0, indexOne);
+            Assert.Equal(2, indexTwo);
         }
 
         [Fact]

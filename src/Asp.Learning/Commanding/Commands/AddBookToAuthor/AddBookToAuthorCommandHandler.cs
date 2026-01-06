@@ -1,5 +1,7 @@
 ﻿using Asp.Learning.Contracts.Services;
 using Asp.Learning.Services.domain;
+using Asp.Learning.Services.repositories.context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Asp.Learning.Commanding.Commands.AddBookToAuthor;
 
@@ -24,8 +26,11 @@ public class AddBookToAuthorCommandHandler : ICommandHandler<AddBookToAuthorComm
             command.Description
         );
 
+       
+        author._courses.Add(curso);
 
-        author.AddCourse(curso);
+        LearningDbContext context = this.repository.GetContext();
+        var asas = context.Entry(author);
 
         var result = await this.repository.SaveChangesASync();
 

@@ -17,14 +17,14 @@ namespace C_.Concepts
             bool isDigit = char.IsDigit(charLetter);
             bool isLetter = char.IsLetter(charLetter);
             bool isPuntuation = char.IsPunctuation(charLetter);
-            Assert.True(!isWhiteSpace);
-            Assert.True(!isDigit);
+            Assert.False(isWhiteSpace);
+            Assert.False(isDigit);
             Assert.True(isLetter);
-            Assert.True(!isPuntuation);
+            Assert.False(isPuntuation);
 
             DateTime newDate = new DateTime(1987, 01, 23, 15,30,00);
             Assert.Equal(1987, newDate.Year);
-            Assert.Equal(2025, DateTime.Now.Year);
+            Assert.Equal(2026, DateTime.Now.Year);
             Assert.Equal(25, newDate.AddDays(2).Day);
 
         }

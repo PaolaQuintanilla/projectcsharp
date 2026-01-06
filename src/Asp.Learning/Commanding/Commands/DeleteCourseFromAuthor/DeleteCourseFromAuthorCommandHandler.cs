@@ -27,7 +27,7 @@ namespace Asp.Learning.Commanding.Commands.DeleteCourseFromAuthor
                 throw new ArgumentException();
             }
 
-            author.Courses.Remove(course);
+            //author.Courses.Remove(course);
             await this.repository.SaveChangesASync();
             
             return command.CourseId;

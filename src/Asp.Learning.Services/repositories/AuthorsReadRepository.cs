@@ -18,7 +18,8 @@ public class AuthorsReadRepository : IReadRepository<Author>
 
     public async Task<Author> FindAsync(Guid id)
     {
-        var entity = await _dbSet.Include((a) => a.Courses).FirstOrDefaultAsync(a => a.Id == id);
+        var entity = await _dbSet.Include((a) => a.Courses)
+            .FirstOrDefaultAsync(a => a.Id == id);
 
         if (entity is null)
         {

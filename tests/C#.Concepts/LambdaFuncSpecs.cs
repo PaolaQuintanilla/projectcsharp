@@ -7,17 +7,18 @@
 //There are lambda expresions and lambda statements
 public class LambdaFuncSpecs
 {
-    public delegate int SumDelegate(int numbOne, int numbTwo);
+    public delegate int SumActionDelegate(int numbOne, int numbTwo);
+    public delegate bool IsPredicateParNumber(int numbOne);
 
     [Fact]
     public void Members()
     {
         //lambda expression can be assign to a delegate
-        SumDelegate myDeleg = (num, num2) => num*num2;
+        SumActionDelegate myDeleg = (num, num2) => num*num2;
         Assert.Equal(2, myDeleg(1,2));
 
         //lambda statement
-        SumDelegate myDeleg2 = (num, num2) =>
+        SumActionDelegate myDeleg2 = (num, num2) =>
         {
             return num * num2;
         };
@@ -27,14 +28,37 @@ public class LambdaFuncSpecs
         Func<int, int, int> myFuncDel = (num, num2) => num * num2;
         myFuncDel += (num, num2) => num + num2;
 
-        myFuncDel.Invoke(3, 5);
+        int[] expectedResults = { 15, 8 };
+        int index = 0;
+        foreach (Func<int, int, int> func in myFuncDel.GetInvocationList())
+        {
+            Assert.Equal(expectedResults[index], func(3, 5));
+            index++;
+        }
 
+        int resultMulti = myFuncDel.Invoke(3, 5);
+        Assert.Equal(8, resultMulti);//devuelve el valor de la ultima funcion
+        
         //pass a lambda expression as an argument
         var resultFunc = ExecuteSum((num1, num2) => num1 * num2, 1, 2);
         Assert.Equal(2, resultFunc);
     }
 
-    public int ExecuteSum(Func<int, int, int> myFunc, int num1, int num2)
+    [Fact]
+    public void Predicate_Member()
+    {
+        IsPredicateParNumber isPar = (num) => {
+            if (num % 2 == 0)
+            {
+                return true;
+            }
+
+            return false;
+        };
+        Assert.True(isPar(2));
+    }
+
+    private int ExecuteSum(Func<int, int, int> myFunc, int num1, int num2)
     {
         return myFunc(num1, num2);
     }

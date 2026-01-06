@@ -7,8 +7,8 @@ public class SingleResponsability
     [Fact]
     public void SingleRes()
     {
-        var emailService = new EmailService();
-        var fileService = new FileService();
+        IEmailService emailService = new EmailService();
+        IFileService fileService = new FileService();
 
         Assert.Equal("Email", emailService.SendEmail("Email"));
         Assert.Equal("File", fileService.SendFile("File"));

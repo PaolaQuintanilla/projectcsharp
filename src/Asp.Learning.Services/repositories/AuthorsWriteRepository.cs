@@ -36,20 +36,36 @@ public class AuthorsWriteRepository : IWriteRepository<Author>
         return entity.Id;
     }
 
-    public Task<int> SaveChangesASync()
+    public async Task<int> SaveChangesASync()
     {
-        return this.context.SaveChangesAsync();
+        try
+        {
+            return await this.context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
     }
 
     public async Task<Author> FindAsync(Guid id)
     {
-        var entity = await _dbSet.Include((a) => a.Courses).FirstOrDefaultAsync(a => a.Id == id);
+        var entity = await _dbSet.Include((a) => a.Courses)
+            .FirstOrDefaultAsync(a => a.Id == id);
 
+        var entry = context.Entry(entity);
         if (entity is null)
         {
             throw new NullReferenceException();
         }
 
         return entity;
+    }
+
+    public LearningDbContext GetContext()
+    {
+
+        return this.context;
     }
 }

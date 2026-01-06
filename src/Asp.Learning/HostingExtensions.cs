@@ -15,6 +15,8 @@ using Asp.Learning.utilities;
 using Asp.Learning.utilities.filters;
 using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Asp.Learning;
 public static class HostingExtensions
@@ -78,6 +80,10 @@ public static class HostingExtensions
 
     public static void RegisterDBContext(this WebApplicationBuilder builder)
     {
+        //builder.Services.AddScoped(provider => new LearningDbContext(
+        //    builder.Configuration.GetConnectionString("conectionDb"),
+        //    true));
+
         builder.Services.AddDbContext<LearningDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("conectionDb")));
     }

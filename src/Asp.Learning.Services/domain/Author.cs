@@ -8,14 +8,15 @@ public class Author
     private DateTimeOffset _dateOfBirth;
     private DateTimeOffset? _dateOfDeath;
     private string _mainCategory;
-    private ICollection<Course> _courses;
+    public List<Course> _courses = new();
     public Guid Id => _id;
     public string FirstName => _firstName;
     public string LastName => _lastName;
     public DateTimeOffset DateOfBirth => _dateOfBirth;
     public DateTimeOffset? DateOfDeath => _dateOfDeath;
     public string MainCategory => _mainCategory;
-    public ICollection<Course> Courses => _courses;
+    public virtual IReadOnlyList<Course> Courses => _courses;
+
 
     protected Author()
     {
@@ -34,7 +35,6 @@ public class Author
         _mainCategory = mainCategory;
         _dateOfBirth = birth;
         _dateOfDeath = deatch;
-        this._courses = new List<Course>();
     }
 
     public static Author CreateNew(string firstName, string lastName, string mainCategory, DateTimeOffset birth, DateTimeOffset? deatch)
@@ -77,12 +77,10 @@ public class Author
 
     public Author AddCourse(Course curso)
     {
-        if (this.Courses.Any(course => course.Title.Equals(curso.Title)))
+        if (!_courses.Any(course => course.Title.Equals(curso.Title, StringComparison.OrdinalIgnoreCase)))
         {
-            return null;
+            this._courses.Add(curso);
         }
-
-        this._courses.Add(curso);
 
         return this;
     }

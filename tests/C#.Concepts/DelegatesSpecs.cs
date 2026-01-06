@@ -17,7 +17,7 @@ public class DelegatesSpecs
     [Fact]
     public void Members()
     {
-        //El compilador de C# infiera automáticamente que SumValues
+        //El compilador de C# infiere automáticamente que SumValues
         //coincide con la firma del delegado y genera una instancia por ti.
         SumDelegate newDel2 = SumValues;
         Assert.Equal(3, newDel2(1, 2));//executo el delegado
