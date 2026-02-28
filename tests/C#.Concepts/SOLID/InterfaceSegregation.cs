@@ -1,10 +1,13 @@
 ﻿namespace C_.Concepts.SOLID;
 
+//INTERFACE SEGREGATION
 // clients shouldn’t be forced to depend on methods they do not use.
+// we respect ISP by keeping  small and focused interfaces,
+    // so clients only depend on what they actually need.
 public class InterfaceSegregation
 {
     [Fact]
-    public void Liskov()
+    public void Segregation()
     {
         ISmtpService service = new SmtpService();
         ITextMessageService textMessageService = new TextMessageService();

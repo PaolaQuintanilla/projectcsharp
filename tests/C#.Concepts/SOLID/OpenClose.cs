@@ -2,7 +2,7 @@
 
 //OPEN CLOSED
 // Add new functionality without modify existing implementations
-// We use polimorphisim to respect OCP
+// We respect OCP by depending on abstractions and leveraging polymorphism.
 public class OpenClose
 {
     [Fact]
@@ -10,13 +10,13 @@ public class OpenClose
     {
         //arrange
         var areaCalculator= new AreaCalculator();
-        IShape rectangle = new Rectangle
+        IRectangle rectangle = new Rectangle
         {
             Heigth = 2,
             Width = 3,
         };
 
-        IShape circle = new Circle
+        ICircle circle = new Circle
         {
             Radius = 3,
         };
@@ -34,7 +34,8 @@ public class OpenClose
 public class AreaCalculator
 {
     //can work with any kind of shapes !!
-    //we do not need else if here to calculate different shapes !!
+    //we do not need else/if statement here, to calculate different shapes !!
+    //We can extend behavier withouth touching this calculator class
     public int Calculate(IShape shape)
     {
         return shape.GetArea();

@@ -15,8 +15,6 @@ using Asp.Learning.utilities;
 using Asp.Learning.utilities.filters;
 using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace Asp.Learning;
 public static class HostingExtensions
@@ -125,10 +123,10 @@ public static class HostingExtensions
             options.DefaultApiVersion = new ApiVersion(1, 0);
             options.ReportApiVersions = true;
             options.ApiVersionReader = ApiVersionReader.Combine(
-                new UrlSegmentApiVersionReader(),
-                new QueryStringApiVersionReader("api-version"),
-                new HeaderApiVersionReader("X-Version"),
-                new MediaTypeApiVersionReader("X-Version"));
+                new UrlSegmentApiVersionReader(),//api/v1/authors
+                new QueryStringApiVersionReader("api-version"),//?api-version=1
+                new HeaderApiVersionReader("X-Version"),//x-version: 1.0
+                new MediaTypeApiVersionReader("X-Version"));//accept: application/json; x-version=1.0
         })
            .AddMvc(options => { })
            .AddApiExplorer(options =>

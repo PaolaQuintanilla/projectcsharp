@@ -1,7 +1,8 @@
 ﻿namespace C_.Concepts.SOLID;
 
-//SINGLE RESPONSABILITY
-//A single reason to change
+// SINGLE RESPONSIBILITY
+// A class should have one reason to change
+// We respect SRP by keeping one responsibility per class
 public class SingleResponsability
 {
     [Fact]
@@ -11,6 +12,7 @@ public class SingleResponsability
         IFileService fileService = new FileService();
 
         Assert.Equal("Email", emailService.SendEmail("Email"));
+        Assert.True(emailService.IsValidEmail("Email@hotmail.com"));
         Assert.Equal("File", fileService.SendFile("File"));
     }
 }
@@ -22,7 +24,9 @@ public interface IService
 
 public interface IEmailService
 {
+    //tiene dos metodos pero la razon para cambiar es la misma, manejar emails
     public string SendEmail(string email);
+    public bool IsValidEmail(string email);
 }
 
 public interface IFileService : IService
@@ -35,6 +39,11 @@ public class EmailService : IEmailService
     public string SendEmail(string email)
     {
         return email;
+    }
+
+    public bool IsValidEmail(string email)
+    {
+        return email.Contains("@");
     }
 }
 
